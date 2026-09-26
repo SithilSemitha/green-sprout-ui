@@ -182,7 +182,7 @@ function initChatWidget() {
     else launcher.focus();
   };
 
-  const addMessage = (text, sender, link) => {
+  const addMessage = (text, sender, link, productList) => {
     const message = document.createElement('div');
     message.className = `chat-message chat-message-${sender}`;
     message.append(document.createTextNode(text));
@@ -192,16 +192,32 @@ function initChatWidget() {
       anchor.textContent = link.label;
       message.append(document.createTextNode(' '), anchor);
     }
+    if (productList?.length) {
+      const list = document.createElement('div');
+      list.className = 'chat-product-list';
+      productList.forEach(product => {
+        const productLink = document.createElement('a');
+        productLink.className = 'chat-product-item';
+        productLink.href = `product.html?id=${product.id}`;
+        productLink.textContent = `${product.name} - ${formatPrice(product.price)}`;
+        list.appendChild(productLink);
+      });
+      message.appendChild(list);
+    }
     messages.appendChild(message);
     messages.scrollTop = messages.scrollHeight;
   };
 
   const getReply = question => {
     const normalizedQuestion = question.toLowerCase();
+    const compactQuestion = normalizedQuestion.replace(/[^a-z0-9]/g, '');
     const catalog = typeof products === 'undefined' ? [] : products;
     const product = catalog.find(item => {
       const terms = item.name.toLowerCase().split(/\W+/).filter(term => term.length >= 4);
-      return terms.some(term => normalizedQuestion.includes(term));
+      const compactName = item.name.toLowerCase().replace(/[^a-z0-9]/g, '');
+      return compactQuestion.includes(compactName) || terms.some(term => (
+        normalizedQuestion.includes(term) || compactQuestion.includes(term)
+      ));
     });
 
     if (product) {
@@ -226,6 +242,13 @@ function initChatWidget() {
       };
     }
 
+    if (/product|products|catalog|shop|browse|sell/.test(normalizedQuestion)) {
+      return {
+        text: 'Here are the products we have available:',
+        productList: catalog
+      };
+    }
+
     return {
       text: 'I can help with product and order questions. Our team can help with anything else.',
       link: { href: 'Shop.html', label: 'Browse products' }
@@ -247,7 +270,7 @@ function initChatWidget() {
     addMessage(question, 'user');
     input.value = '';
     const reply = getReply(question);
-    addMessage(reply.text, 'assistant', reply.link);
+    addMessage(reply.text, 'assistant', reply.link, reply.productList);
     input.focus();
   });
   document.addEventListener('keydown', event => {

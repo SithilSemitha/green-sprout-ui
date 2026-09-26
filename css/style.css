@@ -1448,6 +1448,21 @@ footer {
 .chat-message a { display: inline-block; margin-top: 5px; color: var(--primary-accent); font-weight: 700; }
 .chat-message-user a { color: var(--white); }
 
+.chat-product-list {
+  display: grid;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.chat-product-item {
+  margin-top: 0 !important;
+  padding: 7px 9px;
+  border: 1px solid rgba(27, 67, 50, 0.16);
+  border-radius: var(--radius-sm);
+  background: var(--white);
+  font-size: 0.82rem;
+}
+
 .chat-prompts { display: flex; flex-wrap: wrap; gap: 8px; }
 .chat-prompts button {
   padding: 7px 10px;
