@@ -39,7 +39,7 @@ function renderFavorites() {
         <img src="${product.image}" alt="${product.name}" class="product-card-image" loading="lazy">
       </a>
       <div class="product-card-content">
-        <div class="product-rating">★★★★★ <span>(${product.reviewsCount})</span></div>
+        <div class="product-rating">${product.reviewsCount ? `★★★★★ <span>(${product.reviewsCount})</span>` : 'No reviews yet'}</div>
         <h3><a href="product.html?id=${product.id}">${product.name}</a></h3>
         <p>${product.description}</p>
         <div class="product-price-row">

@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shop Eco-Friendly Products | GreenSprout</title>
-    <meta name="description" content="Browse GreenSprout's collection of eco-friendly, zero-waste daily products including bamboo toothbrushes, natural soap refills, reusable towels, and insulated bottles.">
+    <meta name="description" content="Browse GreenSprout's collection of eco-friendly daily essentials including bamboo toothbrushes, natural hand wash refills, reusable kitchen towels, natural dishwashing liquid, and soy wax candles.">
     <link rel="stylesheet" href="css/style.css">
-    <link rel="icon" href="images/logo.png" type="image/svg+xml">
+    <link rel="icon" href="images/logo.png" type="image/png">
 </head>
 <body>
     <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -14,7 +14,7 @@
     <header class="navbar">
         <div class="logo-area">
             <a href="index.html" aria-label="GreenSprout Home">
-                <img src="images/logo.svg" alt="GreenSprout Logo" width="180" height="42">
+                <img src="images/logo.png" alt="GreenSprout Logo" width="180" height="42">
             </a>
         </div>
 
@@ -82,7 +82,7 @@
         <div class="footer-grid">
             <div class="footer-col">
                 <div class="logo-area" style="margin-bottom: 16px;">
-                    <img src="images/logo.svg" alt="GreenSprout Logo" width="160">
+                    <img src="images/logo.png" alt="GreenSprout Logo" width="160">
                 </div>
                 <p>Sustainable living made simple. Empowering households to make conscious choices for a cleaner future.</p>
             </div>
@@ -197,7 +197,7 @@
                 <img src="${product.image}" alt="${product.name}" class="product-card-image" loading="lazy">
             </a>
             <div class="product-card-content">
-                <div class="product-rating">★★★★★ <span>(${product.reviewsCount})</span></div>
+                <div class="product-rating">${product.reviewsCount ? `★★★★★ <span>(${product.reviewsCount})</span>` : 'No reviews yet'}</div>
                 <h3><a href="product.html?id=${product.id}">${product.name}</a></h3>
                 <p>${product.description}</p>
                 <div class="product-price-row">
