@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <defs>
+    <linearGradient id="abGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1b4332"/>
+      <stop offset="50%" stop-color="#2d6a4f"/>
+      <stop offset="100%" stop-color="#40916c"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#abGrad)" rx="24"/>
+  <circle cx="400" cy="300" r="220" fill="#ffffff" opacity="0.05"/>
+  <circle cx="400" cy="300" r="160" fill="#ffffff" opacity="0.08"/>
+  <g transform="translate(300, 180)">
+    <circle cx="100" cy="100" r="90" fill="#e8f3ee"/>
+    <path d="M 100,160 Q 100,100 80,60 Q 110,75 100,160 Z" fill="#1b4332"/>
+    <path d="M 95,115 C 50,100 40,50 90,65 C 80,85 90,105 95,115 Z" fill="#52b788"/>
+    <path d="M 105,95 C 150,80 160,30 110,45 C 120,65 110,85 105,95 Z" fill="#40916c"/>
+  </g>
+  <text x="400" y="430" font-family="system-ui, sans-serif" font-weight="800" font-size="32" fill="#ffffff" text-anchor="middle">SUSTAINABLE FUTURE</text>
+  <text x="400" y="470" font-family="system-ui, sans-serif" font-weight="500" font-size="18" fill="#b7e4c7" text-anchor="middle">Ethical Sourcing • Zero Plastic • 100% Biodegradable</text>
+</svg>

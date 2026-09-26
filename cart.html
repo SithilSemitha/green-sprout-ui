@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart | GreenSprout</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="images/logo.png" type="image/svg+xml">
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- HEADER -->
+    <header class="navbar">
+        <div class="logo-area">
+            <a href="index.html">
+                <img src="images/logo.svg" alt="GreenSprout Logo" width="180" height="42">
+            </a>
+        </div>
+
+        <button class="mobile-menu-toggle" aria-label="Toggle Navigation Menu" aria-expanded="false">
+            ☰
+        </button>
+
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="shop.html">Shop</a>
+            <a href="about.html">About Us</a>
+            <a href="blog.html">Blog</a>
+            <a href="contact.html">Contact</a>
+            <a href="cart.html" class="active">
+                Cart 🛒
+                <span class="cart-count">0</span>
+            </a>
+        </nav>
+    </header>
+
+    <main id="main-content">
+        <!-- PAGE HEADER -->
+        <section class="simple-page-header">
+            <span class="section-label">YOUR SHOPPING BASKET</span>
+            <h1>Your Shopping Cart</h1>
+            <p>Review your selected eco-friendly products before proceeding to secure checkout.</p>
+        </section>
+
+        <!-- CART SECTION -->
+        <section class="cart-section">
+            <!-- Items Container -->
+            <div id="cartContainer"></div>
+
+            <!-- Order Total Card -->
+            <div id="cartTotal" class="cart-total" style="display: none;"></div>
+
+            <!-- Action Controls -->
+            <div class="cart-actions">
+                <a href="shop.html" class="continue-shopping">← Continue Shopping</a>
+                <a href="checkout.html" id="checkoutButton" class="checkout-button" style="display: none;">Proceed to Checkout →</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="logo-area" style="margin-bottom: 16px;">
+                    <img src="images/logo.svg" alt="GreenSprout Logo" width="160">
+                </div>
+                <p>Small choices leads to greener living. Thank you for choosing sustainable products.</p>
+            </div>
+
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="shop.html">Shop</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Support</h4>
+                <ul class="footer-links">
+                    <li><a href="checkout.html">Checkout</a></li>
+                    <li><a href="contact.html">Shipping FAQ</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Newsletter</h4>
+                <form class="newsletter-form" style="display: flex; gap: 8px;">
+                    <input type="email" placeholder="Email address" required style="padding: 10px 14px; border-radius: 20px; border: none; width: 100%;">
+                    <button type="submit" class="green-button" style="padding: 10px 18px;">Join</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2026 GreenSprout. All rights reserved.</p>
+            <div>🔒 Encrypted Payments via <strong>Stripe</strong></div>
+        </div>
+    </footer>
+
+    <script src="js/products.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/main.js"></script>
+
+    <script>
+    /* Render Cart Page Dynamic Content */
+    function displayCart() {
+        const cartContainer = document.getElementById("cartContainer");
+        const cartTotal = document.getElementById("cartTotal");
+        const checkoutButton = document.getElementById("checkoutButton");
+
+        if (!cartContainer || !cartTotal || !checkoutButton) return;
+
+        const cart = getCart();
+        cartContainer.innerHTML = "";
+
+        if (cart.length === 0) {
+            cartContainer.innerHTML = `
+                <div class="empty-cart">
+                    <h2>Your cart is currently empty</h2>
+                    <p>Explore our sustainable catalog and add eco-friendly items to your basket!</p>
+                    <a href="shop.html" class="green-button" style="margin-top: 16px;">Start Shopping</a>
+                </div>
+            `;
+            cartTotal.style.display = "none";
+            checkoutButton.style.display = "none";
+            return;
+        }
+
+        checkoutButton.style.display = "inline-flex";
+        cartTotal.style.display = "block";
+
+        let subtotal = 0;
+
+        cart.forEach(item => {
+            const product = getProductById(item.id);
+            if (!product) return;
+
+            const quantity = item.quantity || 1;
+            const itemTotal = product.price * quantity;
+            subtotal += itemTotal;
+
+            const cartItem = document.createElement("div");
+            cartItem.className = "cart-item";
+            cartItem.innerHTML = `
+                <div class="cart-product">
+                    <img src="${product.image}" alt="${product.name}" class="cart-product-image">
+                    <div class="cart-product-info">
+                        <h3><a href="product.html?id=${product.id}">${product.name}</a></h3>
+                        <p style="color: var(--primary-accent); font-weight: 600;">${formatPrice(product.price)} each</p>
+                    </div>
+                </div>
+
+                <div class="cart-quantity">
+                    <button onclick="changeQuantity(${product.id}, -1)" aria-label="Decrease quantity">−</button>
+                    <span>${quantity}</span>
+                    <button onclick="changeQuantity(${product.id}, 1)" aria-label="Increase quantity">+</button>
+                </div>
+
+                <div class="cart-item-total">
+                    <strong>${formatPrice(itemTotal)}</strong>
+                </div>
+
+                <button class="remove-cart-button" onclick="removeFromCart(${product.id})" style="background: none; border: none; color: var(--accent-red); cursor: pointer; font-weight: bold;">
+                    ✕ Remove
+                </button>
+            `;
+            cartContainer.appendChild(cartItem);
+        });
+
+        const shipping = subtotal > 3000 ? 0 : 350;
+        const total = subtotal + shipping;
+
+        cartTotal.innerHTML = `
+            <div style="max-width: 400px; margin-left: auto;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                    <span>Subtotal:</span>
+                    <strong>${formatPrice(subtotal)}</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                    <span>Shipping:</span>
+                    <span>${shipping === 0 ? '<strong style="color: var(--primary-accent);">FREE 🌱</strong>' : formatPrice(shipping)}</span>
+                </div>
+                <hr style="margin: 12px 0; border: none; border-top: 1px solid #e2e8f0;">
+                <div style="display: flex; justify-content: space-between; font-size: 1.3rem;">
+                    <strong>Grand Total:</strong>
+                    <strong style="color: var(--primary);">${formatPrice(total)}</strong>
+                </div>
+            </div>
+        `;
+    }
+
+    displayCart();
+    </script>
+</body>
+</html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details | GreenSprout</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="images/logo.png" type="image/svg+xml">
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- HEADER -->
+    <header class="navbar">
+        <div class="logo-area">
+            <a href="index.html">
+                <img src="images/logo.svg" alt="GreenSprout Logo" width="180" height="42">
+            </a>
+        </div>
+
+        <button class="mobile-menu-toggle" aria-label="Toggle Menu" aria-expanded="false">
+            ☰
+        </button>
+
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="shop.html" class="active">Shop</a>
+            <a href="about.html">About Us</a>
+            <a href="blog.html">Blog</a>
+            <a href="contact.html">Contact</a>
+            <a href="cart.html">
+                Cart 🛒
+                <span class="cart-count">0</span>
+            </a>
+        </nav>
+    </header>
+
+    <main id="main-content">
+        <section class="product-page">
+            <div id="product-container" class="container">
+                <div style="text-align: center; padding: 60px;">
+                    <p>Loading eco-friendly product details...</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="logo-area" style="margin-bottom: 16px;">
+                    <img src="images/logo.svg" alt="GreenSprout Logo" width="160">
+                </div>
+                <p>Sustainable products designed for daily living. Reducing plastic waste one household at a time.</p>
+            </div>
+
+            <div class="footer-col">
+                <h4>Navigation</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="shop.html">Shop Catalog</a></li>
+                    <li><a href="about.html">About Mission</a></li>
+                    <li><a href="blog.html">Sustainability Blog</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Customer Support</h4>
+                <ul class="footer-links">
+                    <li><a href="cart.html">View Cart</a></li>
+                    <li><a href="checkout.html">Checkout</a></li>
+                    <li><a href="contact.html">Returns & Shipping</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Eco Newsletter</h4>
+                <p style="margin-bottom: 14px;">Subscribe for green living tips & exclusive discounts.</p>
+                <form class="newsletter-form" style="display: flex; gap: 8px;">
+                    <input type="email" placeholder="Email address" required style="padding: 10px 14px; border-radius: 20px; border: none; width: 100%;">
+                    <button type="submit" class="green-button" style="padding: 10px 18px;">Join</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2026 GreenSprout. All rights reserved.</p>
+            <div>🔒 Encrypted Payments via <strong>Stripe</strong></div>
+        </div>
+    </footer>
+
+    <script src="js/products.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/main.js"></script>
+
+    <script>
+    let selectedQuantity = 1;
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = Number(urlParams.get("id")) || 1;
+        const product = getProductById(productId);
+        const container = document.getElementById("product-container");
+
+        if (product) {
+            document.title = `${product.name} | GreenSprout`;
+            const stockInfo = getStockStatus(product.stock);
+            const isWish = isWishlisted(product.id);
+
+            container.innerHTML = `
+                <nav class="product-breadcrumb" aria-label="Breadcrumb">
+                    <a href="shop.html">Shop</a>
+                    <span aria-hidden="true">/</span>
+                    <span>${product.name}</span>
+                </nav>
+                <div class="product-detail">
+                    <!-- Image Gallery Column -->
+                    <div class="big-product-image">
+                        <img src="${product.image}" alt="${product.name}" id="mainProductImg">
+                    </div>
+
+                    <!-- Info Column -->
+                    <div class="product-info-page">
+                        <span class="section-label">${product.category.toUpperCase()}</span>
+                        <h1>${product.name}</h1>
+                        
+                        <div class="product-rating product-detail-rating">
+                            ★★★★★ <span>(${product.reviewsCount} customer reviews)</span>
+                        </div>
+
+                        <div class="detail-price">${formatPrice(product.price)}</div>
+
+                        <p class="description">${product.longDescription}</p>
+
+                        <!-- Specifications & Sustainability Breakdown -->
+                        <div class="product-meta-specs">
+                            <div class="spec-item">
+                                <strong>Materials</strong><span>${product.materials}</span>
+                            </div>
+                            <div class="spec-item">
+                                <strong>Eco impact</strong><span>${product.impact}</span>
+                            </div>
+                            <div class="spec-item">
+                                <strong>Packaging</strong><span>${product.packaging}</span>
+                            </div>
+                        </div>
+
+                        <!-- Stock Indicator -->
+                        <div class="product-availability">
+                            <span class="stock-indicator ${stockInfo.class}">
+                                ● ${stockInfo.text}
+                            </span>
+                        </div>
+
+                        <!-- Quantity Selector & Action Controls -->
+                        <div class="product-detail-actions">
+                            <div class="quantity-picker">
+                                <button onclick="adjustQty(-1)" aria-label="Decrease quantity">−</button>
+                                <span id="qtyVal" aria-live="polite">1</span>
+                                <button onclick="adjustQty(1)" aria-label="Increase quantity">+</button>
+                            </div>
+
+                            <button 
+                                class="add-cart-button product-detail-add" 
+                                onclick="handleDetailAddToCart(${product.id})"
+                                ${!stockInfo.canAdd ? 'disabled' : ''}
+                            >
+                                ${stockInfo.canAdd ? 'Add to Cart' : 'Out of Stock'}
+                            </button>
+
+                            <button 
+                                class="wishlist-btn product-detail-wishlist ${isWish ? 'active' : ''}" 
+                                onclick="toggleWishlist(${product.id})" 
+                                aria-label="${isWish ? 'Remove from favourites' : 'Add to favourites'}"
+                                aria-pressed="${isWish}"
+                                data-id="${product.id}"
+                            ></button>
+                        </div>
+
+                        <!-- Trust signals -->
+                        <div class="product-detail-trust">
+                            <span>Secure checkout</span>
+                            <span>Plastic-free packaging</span>
+                            <span>Easy returns</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Customer Reviews Section -->
+                <section class="product-reviews" aria-labelledby="reviewsTitle">
+                    <div class="product-reviews-heading">
+                        <div>
+                            <span class="section-label">CUSTOMER NOTES</span>
+                            <h2 id="reviewsTitle">Reviews <span>(${product.reviewsCount})</span></h2>
+                        </div>
+                        <div class="product-rating">★★★★★ <span>Rated by our customers</span></div>
+                    </div>
+                    
+                    <div class="product-review-grid">
+                        <blockquote class="product-review">
+                            <div class="product-rating">★★★★★</div>
+                            <p>“Wonderful quality! Feels solid and eco-friendly. Recommending to all my friends.”</p>
+                            <div class="product-review-author"><strong>Sanjeewa K.</strong><span>Verified buyer</span></div>
+                        </blockquote>
+                        <blockquote class="product-review">
+                            <div class="product-rating">★★★★★</div>
+                            <p>“Exactly as described. Plastic-free delivery was very fast.”</p>
+                            <div class="product-review-author"><strong>Nuwan T.</strong><span>Verified buyer</span></div>
+                        </blockquote>
+                    </div>
+                </section>
+            `;
+        } else {
+            container.innerHTML = `
+                <div class="no-products">
+                    <h2>Product Not Found</h2>
+                    <p>The requested eco product could not be located in our catalog.</p>
+                    <a href="shop.html" class="green-button" style="margin-top: 16px;">Back to Shop</a>
+                </div>
+            `;
+        }
+    });
+
+    function adjustQty(delta) {
+        selectedQuantity += delta;
+        if (selectedQuantity < 1) selectedQuantity = 1;
+        const qtyEl = document.getElementById("qtyVal");
+        if (qtyEl) qtyEl.textContent = selectedQuantity;
+    }
+
+    function handleDetailAddToCart(productId) {
+        addToCart(productId, selectedQuantity);
+    }
+    </script>
+</body>
+</html>

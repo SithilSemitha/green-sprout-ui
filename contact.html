@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | GreenSprout Support</title>
+    <meta name="description" content="Get in touch with the GreenSprout team for questions about eco-friendly products, orders, shipping, or partnerships.">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="images/logo.png" type="image/svg+xml">
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- HEADER -->
+    <header class="navbar">
+        <div class="logo-area">
+            <a href="index.html">
+                <img src="images/logo.svg" alt="GreenSprout Logo" width="180" height="42">
+            </a>
+        </div>
+
+        <button class="mobile-menu-toggle" aria-label="Toggle Navigation Menu" aria-expanded="false">
+            ☰
+        </button>
+
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="shop.html">Shop</a>
+            <a href="about.html">About Us</a>
+            <a href="blog.html">Blog</a>
+            <a href="contact.html" class="active">Contact</a>
+            <a href="cart.html">
+                Cart 🛒
+                <span class="cart-count">0</span>
+            </a>
+        </nav>
+    </header>
+
+    <main id="main-content">
+        <!-- PAGE HEADER -->
+        <section class="simple-page-header">
+            <span class="section-label">WE ARE HERE TO HELP</span>
+            <h1>Contact GreenSprout</h1>
+            <p>Have questions about our eco products, delivery times, or bulk orders? We'd love to hear from you!</p>
+        </section>
+
+        <!-- CONTACT MAIN SECTION -->
+        <section class="container" style="padding: 60px 0;">
+            <div style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 50px;">
+                
+                <!-- CONTACT DETAILS -->
+                <div class="contact-info" style="background: var(--white); padding: 40px; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);">
+                    <span class="section-label">GET IN TOUCH</span>
+                    <h2 style="margin-bottom: 20px;">Have a Question?</h2>
+                    <p style="color: var(--text-muted); margin-bottom: 32px;">
+                        Our eco customer support team is available Monday to Saturday (9:00 AM – 6:00 PM IST) to assist with any inquiries.
+                    </p>
+
+                    <div style="display: flex; gap: 16px; margin-bottom: 24px;">
+                        <div style="font-size: 1.8rem; color: var(--primary-accent);">📧</div>
+                        <div>
+                            <strong>Email Address</strong>
+                            <p style="color: var(--text-muted);"><a href="mailto:hello@greensprout.com">hello@greensprout.com</a></p>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 16px; margin-bottom: 24px;">
+                        <div style="font-size: 1.8rem; color: var(--primary-accent);">📞</div>
+                        <div>
+                            <strong>Phone Number</strong>
+                            <p style="color: var(--text-muted);"><a href="tel:+94112345678">+94 11 234 5678</a></p>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 16px;">
+                        <div style="font-size: 1.8rem; color: var(--primary-accent);">📍</div>
+                        <div>
+                            <strong>Location</strong>
+                            <p style="color: var(--text-muted);">Colombo 03, Sri Lanka</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CONTACT FORM -->
+                <div class="contact-form-container" style="background: var(--white); padding: 40px; border-radius: var(--radius-lg); box-shadow: var(--shadow-md);">
+                    <h3 style="margin-bottom: 24px;">Send Us a Message</h3>
+                    
+                    <form class="contact-form" onsubmit="return handleContactSubmit(event)">
+                        <div class="form-group">
+                            <label for="name">Your Full Name *</label>
+                            <input type="text" id="name" required placeholder="e.g. Sithil Semitha">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" required placeholder="name@domain.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="subject">Subject *</label>
+                            <input type="text" id="subject" required placeholder="Product query, order status, partnership...">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message">Message *</label>
+                            <textarea id="message" rows="5" required placeholder="Write your query here..."></textarea>
+                        </div>
+
+                        <button type="submit" class="green-button" style="width: 100%;">
+                            Send Message →
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="logo-area" style="margin-bottom: 16px;">
+                    <img src="images/logo.svg" alt="GreenSprout Logo" width="160">
+                </div>
+                <p>Small choices. Greener living. Sustainable products for conscious everyday living.</p>
+            </div>
+
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="shop.html">Shop Catalog</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Customer Support</h4>
+                <ul class="footer-links">
+                    <li><a href="cart.html">View Cart</a></li>
+                    <li><a href="checkout.html">Checkout</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Newsletter</h4>
+                <form class="newsletter-form" style="display: flex; gap: 8px;">
+                    <input type="email" placeholder="Your email address" required style="padding: 10px 14px; border-radius: 20px; border: none; width: 100%;">
+                    <button type="submit" class="green-button" style="padding: 10px 18px;">Join</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2026 GreenSprout. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/products.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/main.js"></script>
+
+    <script>
+    function handleContactSubmit(event) {
+        event.preventDefault();
+        const name = document.getElementById("name").value;
+        showToast(`Thank you, ${name}! Your message has been received. We will respond within 24 hours.`, "success");
+        event.target.reset();
+        return false;
+    }
+    </script>
+</body>
+</html>

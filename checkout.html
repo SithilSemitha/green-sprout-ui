@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Checkout | GreenSprout</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="images/logo.png" type="image/svg+xml">
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- HEADER -->
+    <header class="navbar">
+        <div class="logo-area">
+            <a href="index.html">
+                <img src="images/logo.svg" alt="GreenSprout Logo" width="180" height="42">
+            </a>
+        </div>
+
+        <button class="mobile-menu-toggle" aria-label="Toggle Navigation Menu" aria-expanded="false">
+            ☰
+        </button>
+
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="shop.html">Shop</a>
+            <a href="about.html">About Us</a>
+            <a href="blog.html">Blog</a>
+            <a href="contact.html">Contact</a>
+            <a href="cart.html">
+                Cart 🛒
+                <span class="cart-count">0</span>
+            </a>
+        </nav>
+    </header>
+
+    <main id="main-content">
+        <section class="checkout-page">
+            <div class="checkout-grid">
+
+                <!-- Left Column: Customer Form -->
+                <div class="checkout-box">
+                    <span class="section-label">STEP 1 OF 2</span>
+                    <h1 style="margin-bottom: 24px;">Customer & Delivery Details</h1>
+
+                    <form id="checkoutForm">
+                        <div class="form-group">
+                            <label for="name">Full Name *</label>
+                            <input type="text" id="name" required placeholder="e.g. Sithil Perera">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="email">Email Address *</label>
+                                <input type="email" id="email" required placeholder="name@domain.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone Number *</label>
+                                <input type="tel" id="phone" required placeholder="+94 77 123 4567">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="address">Delivery Street Address *</label>
+                            <textarea id="address" rows="3" required placeholder="Street address, apartment, suite, etc."></textarea>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="city">City *</label>
+                                <input type="text" id="city" required placeholder="e.g. Colombo">
+                            </div>
+                            <div class="form-group">
+                                <label for="postalCode">Postal Code</label>
+                                <input type="text" id="postalCode" placeholder="00100">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="country">Country</label>
+                            <input type="text" id="country" value="Sri Lanka" required readonly style="background: var(--bg-sage);">
+                        </div>
+
+                        <!-- Payment Method Selection -->
+                        <div style="margin-top: 32px; border-top: 1px solid #e2e8f0; padding-top: 24px;">
+                            <h3>Select Payment Method</h3>
+                            
+                            <div class="payment-options">
+                                <!-- Option 1: Stripe Hosted Payment -->
+                                <div class="payment-option-container">
+                                    <label class="payment-option" style="margin-bottom: 0; border-bottom-left-radius: 0; border-bottom-right-radius: 0;">
+                                        <input type="radio" name="paymentMethod" value="Stripe" checked>
+                                        <div>
+                                            <strong>💳 Credit / Debit Card (Stripe)</strong>
+                                            <p style="font-size: 0.85rem; color: var(--text-muted);">Pay securely via Visa, Mastercard, AMEX using Stripe.</p>
+                                        </div>
+                                    </label>
+                                    <div id="stripeMockContainer" class="stripe-mock-ui">
+                                        <div class="stripe-input-group">
+                                            <div class="stripe-field card-number">
+                                                <label>Card number</label>
+                                                <input type="text" id="mockCardNumber" placeholder="0000 0000 0000 0000" maxlength="19">
+                                            </div>
+                                            <div class="stripe-row">
+                                                <div class="stripe-field">
+                                                    <label>Expiration</label>
+                                                    <input type="text" id="mockCardExpiry" placeholder="MM/YY" maxlength="5">
+                                                </div>
+                                                <div class="stripe-field">
+                                                    <label>CVC</label>
+                                                    <input type="text" id="mockCardCVC" placeholder="123" maxlength="4">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Option 2: Cash On Delivery -->
+                                <label class="payment-option">
+                                    <input type="radio" name="paymentMethod" value="COD">
+                                    <div>
+                                        <strong>💵 Cash on Delivery</strong>
+                                        <p style="font-size: 0.85rem; color: var(--text-muted);">Pay cash when courier delivers your order.</p>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 24px;">
+                            <button type="submit" id="checkoutSubmitBtn" class="continue-button">
+                                Complete Order →
+                            </button>
+                        </div>
+
+                        <p style="font-size: 0.85rem; color: var(--text-muted); text-align: center; margin-top: 16px;">
+                            🔒 100% Encrypted & Safe. We never store credit card numbers on our servers.
+                        </p>
+                    </form>
+                </div>
+
+                <!-- Right Column: Order Summary -->
+                <div class="checkout-summary-box">
+                    <h3 style="margin-bottom: 20px;">Order Summary</h3>
+                    
+                    <div id="checkoutSummaryItems" style="margin-bottom: 24px;">
+                        <p>Loading items...</p>
+                    </div>
+
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <strong id="checkoutSubtotal">LKR 0</strong>
+                    </div>
+
+                    <div class="summary-row">
+                        <span>Shipping</span>
+                        <strong id="checkoutShipping">LKR 0</strong>
+                    </div>
+
+                    <div class="summary-row total">
+                        <span>Total</span>
+                        <strong id="checkoutGrandTotal">LKR 0</strong>
+                    </div>
+
+                    <div style="margin-top: 24px; background: var(--bg-sage); padding: 16px; border-radius: var(--radius-md);">
+                        <p style="font-size: 0.85rem; color: var(--primary);">
+                            🌱 <strong>Eco Guarantee:</strong> Orders over LKR 3,000 qualify for FREE plastic-free carbon-neutral shipping!
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-bottom" style="border: none; padding: 0;">
+            <p>© 2026 GreenSprout. All rights reserved.</p>
+            <div>🔒 Powered by <strong>Stripe Checkout API</strong></div>
+        </div>
+    </footer>
+
+    <script src="js/products.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/checkout.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

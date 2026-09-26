@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 80" width="300" height="80">
+  <defs>
+    <linearGradient id="leafGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#52b788"/>
+      <stop offset="100%" stop-color="#1b4332"/>
+    </linearGradient>
+    <linearGradient id="sproutGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#2d6a4f"/>
+      <stop offset="100%" stop-color="#74c69d"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Icon Group -->
+  <g transform="translate(15, 10)">
+    <!-- Outer Circle Badge -->
+    <circle cx="30" cy="30" r="28" fill="#e8f3ee" stroke="#b7e4c7" stroke-width="2"/>
+    <!-- Stem & Leaves -->
+    <path d="M 30,48 Q 30,30 24,20 Q 32,24 30,48 Z" fill="url(#sproutGrad)"/>
+    <path d="M 28,34 C 15,30 12,16 26,20 C 24,26 26,31 28,34 Z" fill="url(#leafGrad)"/>
+    <path d="M 30,28 C 44,24 46,10 32,15 C 34,22 32,26 30,28 Z" fill="#40916c"/>
+    <circle cx="35" cy="14" r="3" fill="#f4a261"/>
+  </g>
+  
+  <!-- Text Brand -->
+  <text x="85" y="42" font-family="'Plus Jakarta Sans', 'Segoe UI', sans-serif" font-weight="800" font-size="26" fill="#1b4332" letter-spacing="-0.5">Green<tspan fill="#40916c">Sprout</tspan></text>
+  <text x="86" y="58" font-family="'Inter', 'Segoe UI', sans-serif" font-weight="600" font-size="10" fill="#52796f" letter-spacing="1.5">ECO-LIVING &amp; CARE</text>
+</svg>

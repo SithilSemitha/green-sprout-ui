@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmed | GreenSprout</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="images/logo.png" type="image/svg+xml">
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- HEADER -->
+    <header class="navbar">
+        <div class="logo-area">
+            <a href="index.html">
+                <img src="images/logo.svg" alt="GreenSprout Logo" width="180" height="42">
+            </a>
+        </div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="shop.html">Shop</a>
+            <a href="about.html">About Us</a>
+            <a href="blog.html">Blog</a>
+            <a href="contact.html">Contact</a>
+            <a href="cart.html">Cart 🛒</a>
+        </nav>
+    </header>
+
+    <main id="main-content">
+        <section class="confirmation-page">
+            <div class="confirmation-box">
+                <div class="success-icon">✅</div>
+                <h1 style="color: var(--primary); margin-bottom: 8px;">Order Confirmed!</h1>
+                <p style="font-size: 1.1rem; color: var(--text-muted); margin-bottom: 24px;">
+                    Thank you for choosing GreenSprout and supporting sustainable products!
+                </p>
+
+                <!-- Order Reference Badge -->
+                <div style="background: var(--bg-sage); padding: 16px; border-radius: var(--radius-md); margin-bottom: 24px;">
+                    <p style="font-weight: 700; color: var(--primary); margin-bottom: 4px;">Order Reference ID:</p>
+                    <span id="orderRefId" style="font-family: monospace; font-size: 1.2rem; letter-spacing: 1px; color: var(--primary-accent);">GS-849201</span>
+                </div>
+
+                <!-- Customer Details & Message -->
+                <div id="customerSummary" style="text-align: left; margin-bottom: 24px; border: 1px solid #e2e8f0; padding: 20px; border-radius: var(--radius-md);">
+                    <p id="customer-message" style="font-weight: bold; margin-bottom: 6px;"></p>
+                    <p id="payment-message" style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 6px;"></p>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">
+                        📦 <strong>Estimated Delivery:</strong> 2–4 Business Days via Plastic-Free Courier
+                    </p>
+                </div>
+
+                <!-- Purchased Items Breakdown -->
+                <div id="purchasedItemsList" style="text-align: left; margin-bottom: 24px;"></div>
+
+                <!-- E-Commerce Payment & Operations Flow Diagram (CW Requirement) -->
+                <div style="background: var(--white); border: 1px solid rgba(27, 67, 50, 0.15); border-radius: var(--radius-md); padding: 20px; text-align: left; margin-bottom: 32px;">
+                    <h4 style="color: var(--primary); margin-bottom: 10px;">🔄 CW E-Commerce Operational & Inventory Flow</h4>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px;">Verified workflow path executed during this order transaction:</p>
+                    
+                    <div style="display: flex; flex-wrap: wrap; gap: 8px; font-size: 0.78rem; font-weight: 700;">
+                        <span style="background: var(--bg-sage); padding: 6px 10px; border-radius: 12px; color: var(--primary);">Customer</span> →
+                        <span style="background: var(--bg-sage); padding: 6px 10px; border-radius: 12px; color: var(--primary);">Product Selection</span> →
+                        <span style="background: var(--bg-sage); padding: 6px 10px; border-radius: 12px; color: var(--primary);">Cart Review</span> →
+                        <span style="background: var(--bg-sage); padding: 6px 10px; border-radius: 12px; color: var(--primary);">Stripe Checkout</span> →
+                        <span style="background: #d8f3dc; padding: 6px 10px; border-radius: 12px; color: var(--primary-accent);">Payment Authenticated</span> →
+                        <span style="background: #d8f3dc; padding: 6px 10px; border-radius: 12px; color: var(--primary-accent);">Inventory Deducted</span>
+                    </div>
+                </div>
+
+                <a href="shop.html" class="green-button">Continue Shopping →</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-bottom" style="border: none; padding: 20px 8%; text-align: center;">
+            <p>© 2026 GreenSprout. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/products.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/main.js"></script>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const orderId = urlParams.get("order_id") || urlParams.get("session_id") || localStorage.getItem("greenSproutLastOrderId") || ("GS-" + Math.floor(100000 + Math.random() * 900000));
+        const method = urlParams.get("method") || localStorage.getItem("greenSproutPayment") || "Stripe Checkout";
+
+        const orderRefEl = document.getElementById("orderRefId");
+        if (orderRefEl) orderRefEl.textContent = orderId;
+
+        const customer = JSON.parse(localStorage.getItem("greenSproutCustomer")) || {
+            name: "Eco Shopper",
+            email: "shopper@example.com"
+        };
+
+        const custMsg = document.getElementById("customer-message");
+        if (custMsg) custMsg.textContent = `Thank you, ${customer.name}! We've sent a detailed receipt to ${customer.email}.`;
+
+        const payMsg = document.getElementById("payment-message");
+        if (payMsg) payMsg.textContent = `Payment Status: Successful (${method === 'cod' ? 'Cash on Delivery' : 'Stripe Verified Payment'})`;
+
+        // Render ordered items summary from cart before clearing
+        const cart = getCart();
+        const purchasedList = document.getElementById("purchasedItemsList");
+
+        if (purchasedList && cart.length > 0) {
+            let itemsHtml = '<h4 style="margin-bottom: 12px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px;">Order Summary:</h4>';
+            let grandTotal = 0;
+
+            cart.forEach(item => {
+                const product = getProductById(item.id);
+                if (product) {
+                    const lineTotal = product.price * item.quantity;
+                    grandTotal += lineTotal;
+                    itemsHtml += `
+                        <div style="display: flex; justify-content: space-between; font-size: 0.95rem; margin-bottom: 6px;">
+                            <span>${item.quantity}x ${product.name}</span>
+                            <strong>${formatPrice(lineTotal)}</strong>
+                        </div>
+                    `;
+                }
+            });
+
+            const shipping = grandTotal > 3000 ? 0 : 350;
+            itemsHtml += `
+                <div style="display: flex; justify-content: space-between; font-size: 0.95rem; margin-top: 10px; font-weight: bold; border-top: 1px solid #e2e8f0; padding-top: 8px;">
+                    <span>Total Paid:</span>
+                    <span style="color: var(--primary);">${formatPrice(grandTotal + shipping)}</span>
+                </div>
+            `;
+            purchasedList.innerHTML = itemsHtml;
+        }
+
+        // Clear local storage cart upon order confirmation
+        clearCart();
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Gateway | GreenSprout</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="images/logo.png" type="image/svg+xml">
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <header class="navbar">
+        <div class="logo-area">
+            <a href="index.html">
+                <img src="images/logo.svg" alt="GreenSprout Logo" width="180" height="42">
+            </a>
+        </div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="shop.html">Shop</a>
+            <a href="cart.html">Cart 🛒</a>
+        </nav>
+    </header>
+
+    <main id="main-content">
+        <section class="payment-page">
+            <div class="payment-box">
+                <span class="section-label">SECURE PAYMENT GATEWAY</span>
+                <h1 style="margin-bottom: 12px;">Choose Payment Method</h1>
+                <p style="margin-bottom: 24px; color: var(--text-muted);">Select how you would like to complete your order payment.</p>
+
+                <form id="directPaymentForm" onsubmit="completePayment(event)">
+                    <label class="payment-option">
+                        <input type="radio" name="payment" value="Stripe" checked required>
+                        <div>
+                            <strong>💳 Stripe Hosted Checkout (Visa, Mastercard, AMEX)</strong>
+                            <p style="font-size: 0.85rem; color: var(--text-muted);">Secure server-side payment processing powered by Stripe.</p>
+                        </div>
+                    </label>
+
+                    <label class="payment-option">
+                        <input type="radio" name="payment" value="Cash on Delivery">
+                        <div>
+                            <strong>💵 Cash on Delivery</strong>
+                            <p style="font-size: 0.85rem; color: var(--text-muted);">Pay when your eco parcel arrives at your doorstep.</p>
+                        </div>
+                    </label>
+
+                    <button type="submit" id="paySubmitBtn" class="pay-button" style="margin-top: 24px;">
+                        Proceed to Secure Checkout →
+                    </button>
+                </form>
+
+                <div style="margin-top: 24px; text-align: center; font-size: 0.85rem; color: var(--text-muted);">
+                    🔒 SSL 256-Bit Encrypted Secure Connection • Stripe Certified
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-bottom" style="border: none; padding: 20px 8%; text-align: center;">
+            <p>© 2026 GreenSprout. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/products.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/checkout.js"></script>
+    <script src="js/main.js"></script>
+
+    <script>
+    function completePayment(event) {
+        event.preventDefault();
+        const selected = document.querySelector('input[name="payment"]:checked')?.value || 'Stripe';
+        localStorage.setItem("greenSproutPayment", selected);
+
+        const cart = getCart();
+        const customer = JSON.parse(localStorage.getItem("greenSproutCustomer")) || {
+            name: "Customer",
+            email: "customer@example.com",
+            phone: "+94 77 123 4567",
+            address: "Colombo, Sri Lanka",
+            city: "Colombo",
+            postalCode: "00100",
+            country: "Sri Lanka"
+        };
+
+        if (selected === 'Stripe') {
+            initiateStripeCheckoutSession(cart, customer);
+        } else {
+            const orderId = 'GS-' + Math.floor(100000 + Math.random() * 900000);
+            localStorage.setItem('greenSproutLastOrderId', orderId);
+            window.location.href = `order-confirmation.html?order_id=${orderId}&method=cod`;
+        }
+    }
+    </script>
+</body>
+</html>
