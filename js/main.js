@@ -10,15 +10,62 @@ document.addEventListener('DOMContentLoaded', () => {
   initFavoritesNavigation();
   highlightActiveNavLink();
   initChatWidget();
-  initSplashScreen();
+  initSplashScreen(initCookieConsent);
 });
 
-function initSplashScreen() {
+function initCookieConsent() {
+  const storageKey = 'greenSproutCookieConsent';
+  let savedChoice;
+
+  try {
+    savedChoice = sessionStorage.getItem(storageKey);
+  } catch {}
+
+  if (savedChoice === 'accepted' || savedChoice === 'declined') return;
+
+  const consent = document.createElement('dialog');
+  consent.className = 'cookie-consent';
+  consent.setAttribute('aria-labelledby', 'cookieConsentTitle');
+  consent.setAttribute('aria-describedby', 'cookieConsentDescription');
+  consent.innerHTML = `
+    <div class="cookie-consent-heading">
+      <span class="cookie-consent-icon" aria-hidden="true">🍪</span>
+      <h2 id="cookieConsentTitle">We use cookies</h2>
+    </div>
+    <p id="cookieConsentDescription">GreenSprout uses cookies and browser storage to support shopping features and improve your experience. Choose whether to accept or decline cookies.</p>
+    <div class="cookie-consent-actions">
+      <button class="cookie-accept" type="button" data-cookie-choice="accepted">Accept Cookies</button>
+      <button class="cookie-decline" type="button" data-cookie-choice="declined">Decline</button>
+    </div>
+  `;
+
+  consent.addEventListener('cancel', event => event.preventDefault());
+  consent.addEventListener('click', event => {
+    const choiceButton = event.target.closest('[data-cookie-choice]');
+    if (!choiceButton) return;
+
+    try {
+      sessionStorage.setItem(storageKey, choiceButton.dataset.cookieChoice);
+    } catch {}
+
+    consent.close();
+    consent.remove();
+  });
+
+  document.body.appendChild(consent);
+  consent.showModal();
+}
+
+function initSplashScreen(onComplete = () => {}) {
   const body = document.body;
-  if (!body) return;
+  if (!body) {
+    onComplete();
+    return;
+  }
 
   const hasSeenSplash = sessionStorage.getItem('greensproutSplashSeen') === 'true';
   if (hasSeenSplash) {
+    onComplete();
     return;
   }
 
@@ -45,6 +92,7 @@ function initSplashScreen() {
     body.classList.add('splash-finished');
     window.setTimeout(() => {
       splash.remove();
+      onComplete();
     }, 700);
   }, 1400);
 }
